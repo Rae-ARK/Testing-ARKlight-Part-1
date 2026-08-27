@@ -35,6 +35,11 @@ the one-off directory pages themselves and stay `@site.page(...)`
 decorated like `/`; `/tags/<tag>` and `/authors/<slug>` are the
 per-item loops.
 
+`/search` (stage 6) is a plain `@site.page(...)` route like `/`,
+`/tags`, and `/authors` -- it's a single static page, not a family of
+generated routes, so there's no loop for it. See `pages/search.py`
+for why its form is deliberately non-functional for now.
+
 `pages` and `components` are imported bare (not as `ark.pages`) because
 ARKlight's loader adds this file's own directory (`ark/`) to `sys.path`
 for exactly this: a package-shaped site's sibling packages resolve as
@@ -53,6 +58,7 @@ from pages.article import article_page
 from pages.author import author_page
 from pages.authors import authors_page
 from pages.home import home_page
+from pages.search import search_page
 from pages.tag import tag_page
 from pages.tags import tags_page
 
@@ -72,6 +78,11 @@ def tags():
 @site.page("/authors")
 def authors():
     return authors_page()
+
+
+@site.page("/search")
+def search():
+    return search_page()
 
 
 for _article in ARTICLES:

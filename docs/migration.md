@@ -110,7 +110,12 @@ as a single PR/commit against this repo:
    author's new page. `/search` is still a placeholder -- patch 6.
 6. **Search page** -- initially static/no-op UI; wiring to ARKlight's
    `State`/`Bind` model considered once v0.054 (JS backend capability
-   expansion) lands upstream.
+   expansion) lands upstream. **Landed**: `ark/pages/search.py`
+   registers `/search` in `ark/site.py` as a plain page (no loop,
+   unlike patches 3/5 -- it's a single static page). The form itself
+   is deliberately non-functional (`disabled` input/button, no
+   `action`) until v0.054 lands upstream; `ark/components/layout.py`'s
+   nav comment updated to match.
 7. **Styling pass** -- CSS backend pass for visual parity (design
    tokens, responsive `@media` support already in ARKlight as of
    v0.048).

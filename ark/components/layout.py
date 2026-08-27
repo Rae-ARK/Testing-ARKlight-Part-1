@@ -16,8 +16,8 @@ SITE_NAME = "freeCodeCamp News"
 
 # Tags/Authors are real routes as of stage 5 (see
 # `ark/pages/tags.py`/`ark/pages/authors.py` and the loops in
-# `ark/site.py`). Search stays a placeholder until stage 6 --
-# see docs/migration.md, sequencing step 6.
+# `ark/site.py`). Search is a real route too as of stage 6, but its
+# form is deliberately non-functional -- see `ark/pages/search.py`.
 _NAV_LINKS = (
     ("Tags", "/tags"),
     ("Authors", "/authors"),
