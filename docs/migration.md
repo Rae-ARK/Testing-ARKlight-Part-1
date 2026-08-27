@@ -82,7 +82,13 @@ as a single PR/commit against this repo:
    exist yet -- patches 3 and 5.
 3. **Article page** -- single-post template, including head metadata
    (`title`, `description`, `og_*`, `favicon` -- all supported by
-   `Page(...)` already) ported from the fixture data.
+   `Page(...)` already) ported from the fixture data. **Landed**:
+   `ark/pages/article.py`'s `article_page(article)` builds one
+   content function per fixture article, registered in `ark/site.py`
+   under `/articles/<slug>` via a loop (`site.page(route)(fn)` as a
+   plain call rather than `@` syntax, since the slugs aren't known
+   statically -- see that file's docstring for why this still
+   satisfies ARKlight's static-discovery check).
 4. **Navigation/shared layout** -- header/footer/nav extracted into
    reusable pieces so pages 2-3 stop duplicating markup. **Landed
    ahead of schedule, alongside patch 1**: `ark/components/layout.py`
