@@ -1,0 +1,10 @@
+# ARKlight (alpha branch) isn't published to PyPI -- install from
+# source, per ARKlight's own README:
+#
+#   git clone --branch alpha https://github.com/Rae-ARK/ARKlight.git
+#   pip install -e ./ARKlight
+#
+# This repo's `ark/` site targets ARKlight >= 0.048 (Page head
+# metadata + responsive_style, both used in ark/components/layout.py
+# and ark/pages/home.py). ARKlight itself is GPL-3.0-or-later, per its
+# pyproject.toml -- unrelated to this repo's own licensing.

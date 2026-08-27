@@ -70,17 +70,27 @@ as a single PR/commit against this repo:
 
 1. **Scaffold** -- `arklight` added as a dependency/reference, empty
    `Site()` with a single placeholder route, `arklight build` wired up
-   and producing output. No real content yet.
+   and producing output. No real content yet. **Landed**: `ark/site.py`
+   + package-shaped `ark/pages/`, building via
+   `arklight build ark/site.py -o ARK`.
 2. **Home/listing page** -- static (hard-coded/fixture) article list
    rendered via ARKlight components, matching `Source/`'s listing
-   markup structurally.
+   markup structurally. **In progress**: `ark/pages/home.py` currently
+   holds a placeholder body (confirms the pipeline end-to-end); the
+   real fixture-backed article list is still to come.
 3. **Article page** -- single-post template, including head metadata
    (`title`, `description`, `og_*`, `favicon` -- all supported by
    `Page(...)` already) ported from the fixture data.
 4. **Navigation/shared layout** -- header/footer/nav extracted into
-   reusable pieces so pages 2-3 stop duplicating markup.
+   reusable pieces so pages 2-3 stop duplicating markup. **Landed
+   ahead of schedule, alongside patch 1**: `ark/components/layout.py`
+   (`site_nav()`, `site_header()`, `site_footer()`, `page_shell()`) --
+   built at the same time as the scaffold since a single placeholder
+   page still needed somewhere to put reusable structure from day one.
 5. **Tag and author pages** -- filtered listing variants reusing the
-   home page's listing component.
+   home page's listing component. Nav links to `/tags`, `/authors`,
+   `/search` already exist in `ark/components/layout.py` as
+   placeholders pointing at routes that don't exist yet.
 6. **Search page** -- initially static/no-op UI; wiring to ARKlight's
    `State`/`Bind` model considered once v0.054 (JS backend capability
    expansion) lands upstream.

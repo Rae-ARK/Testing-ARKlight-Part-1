@@ -1,1 +1,4 @@
 *.patch
+__pycache__/
+*.pyc
+ARK/
