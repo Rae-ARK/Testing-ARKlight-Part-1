@@ -98,7 +98,16 @@ as a single PR/commit against this repo:
 5. **Tag and author pages** -- filtered listing variants reusing the
    home page's listing component. Nav links to `/tags`, `/authors`,
    `/search` already exist in `ark/components/layout.py` as
-   placeholders pointing at routes that don't exist yet.
+   placeholders pointing at routes that don't exist yet. **Landed**:
+   `ark/content/taxonomy.py` derives tags/authors (and an invented
+   `author_slug()`) from `ark/content/articles.py` directly -- no
+   separate tag/author fixture. `ark/pages/tag.py` and
+   `ark/pages/author.py` build one page per tag/author (registered in
+   `ark/site.py` via the same slug-loop pattern as patch 3's article
+   pages); `ark/pages/tags.py` and `ark/pages/authors.py` fill in the
+   `/tags`/`/authors` directory routes the nav already linked to.
+   `ark/components/article_card.py`'s byline now links to the
+   author's new page. `/search` is still a placeholder -- patch 6.
 6. **Search page** -- initially static/no-op UI; wiring to ARKlight's
    `State`/`Bind` model considered once v0.054 (JS backend capability
    expansion) lands upstream.

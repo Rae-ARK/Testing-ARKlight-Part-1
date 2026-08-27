@@ -27,6 +27,14 @@ identically either way -- static discovery just needs to see *some*
 literal `@site.page(...)` decorator here to pass its "site has pages"
 check, and the `/` route below already satisfies that.
 
+Tag and author pages (stage 5) follow the same loop pattern, one level
+further: the set of tags/author-slugs isn't just unknown statically,
+it's *derived* (via `content/taxonomy.py`) from the article fixtures
+rather than being its own list anywhere. `/tags` and `/authors` are
+the one-off directory pages themselves and stay `@site.page(...)`
+decorated like `/`; `/tags/<tag>` and `/authors/<slug>` are the
+per-item loops.
+
 `pages` and `components` are imported bare (not as `ark.pages`) because
 ARKlight's loader adds this file's own directory (`ark/`) to `sys.path`
 for exactly this: a package-shaped site's sibling packages resolve as
@@ -40,8 +48,13 @@ scaffold is patch 1 of.
 from arklight import Site
 
 from content.articles import ARTICLES
+from content.taxonomy import all_authors, all_tags, author_slug
 from pages.article import article_page
+from pages.author import author_page
+from pages.authors import authors_page
 from pages.home import home_page
+from pages.tag import tag_page
+from pages.tags import tags_page
 
 site = Site(name="arklight-news", lang="en")
 
@@ -51,5 +64,22 @@ def home():
     return home_page()
 
 
+@site.page("/tags")
+def tags():
+    return tags_page()
+
+
+@site.page("/authors")
+def authors():
+    return authors_page()
+
+
 for _article in ARTICLES:
     site.page(f"/articles/{_article['slug']}")(article_page(_article))
+
+for _tag in all_tags(ARTICLES):
+    site.page(f"/tags/{_tag}")(tag_page(_tag, ARTICLES))
+
+for _author in all_authors(ARTICLES):
+    _slug = author_slug(_author)
+    site.page(f"/authors/{_slug}")(author_page(_author, _slug, ARTICLES))

@@ -7,6 +7,8 @@ Same "reuse is just a Python function" pattern as
 
 from arklight import Article, Container, Heading, Link, Text, Time
 
+from content.taxonomy import author_slug
+
 
 def article_card(article):
     """Build a single listing card from a fixture article dict.
@@ -20,7 +22,15 @@ def article_card(article):
         Text(article["excerpt"], class_name="excerpt"),
         Link("Read more", href=f"/articles/{article['slug']}", class_name="read-more"),
         Container(
-            Text(f"By {article['author']}", class_name="author"),
+            Container(
+                Text("By ", class_name="author-label"),
+                Link(
+                    article["author"],
+                    href=f"/authors/{author_slug(article['author'])}",
+                    class_name="author",
+                ),
+                class_name="byline",
+            ),
             Time(article["published"], datetime=article["published"]),
             Container(
                 *(
