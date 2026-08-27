@@ -1,0 +1,22 @@
+{
+  "publication": {
+    "staticPages": {
+      "edges": [
+        {
+          "node": {
+            "id": "6698b0d32204c0bcdb9636b4",
+            "slug": "thank-you-for-being-a-supporter",
+            "title": "Thank You for Being a Supporter",
+            "content": {
+              "html": "<p>freeCodeCamp is a highly-efficient education NGO. This year alone, we've provided million hours of free education to people around the world.</p>\n<p>At our charity's current operating budget, every dollar you donate to freeCodeCamp translates into 50 hours worth of technology education.</p>\n<p>When you donate to freeCodeCamp, you help people learn new skills and provide for their families.</p>\n<p>You also help us create new resources for you and your family to use to expand your own technology skills.</p>\n<p>Thank you again for supporting our charity.</p>\n"
+            }
+          }
+        }
+      ],
+      "pageInfo": {
+        "endCursor": "MQ==",
+        "hasNextPage": false
+      }
+    }
+  }
+}

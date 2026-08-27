@@ -1,0 +1,101 @@
+{
+  "buttons": {
+    "forum": "Fórum",
+    "donate": "Doar",
+    "load-more-articles": "Carregar mais artigos",
+    "menu": "Menu",
+    "learn": "Curriculum",
+    "toggle-dark-mode": "Night Mode",
+    "change-language": "Change Language"
+  },
+  "search": {
+    "label": "Buscar",
+    "accessible-name": "Envie sua consulta de pesquisa",
+    "placeholder": {
+      "default": "Pesquisar em nossos artigos de notícias, tutoriais e livros",
+      "numbered": "Pesquise em mais de {{ roundedTotalRecords }} artigos, tutoriais e livros"
+    },
+    "see-results": "Ver todos os resultados para {{ searchQuery }}",
+    "no-results": "Nenhum resultado encontrado"
+  },
+  "banner": {
+    "default": "Learn Software Engineering Fundamentals – {{ <0> }}Try Our FREE Curriculum{{ </0> }}",
+    "authenticated": "Apoie nossa organização beneficente e nossa missão. {{ <0> }}Faça sua doação para o freeCodeCamp.org{{ </0> }}.",
+    "authenticated-donor": "Obrigado por apoiar o freeCodeCamp com {{ <0> }}suas doações{{ </0> }}."
+  },
+  "default-bio": "Ler {{ <0> }}mais publicações{{ </0> }}.",
+  "author": {
+    "no-posts": "Não há artigos",
+    "one-post": "1 artigo",
+    "multiple-posts": "{{ postCount }} artigos"
+  },
+  "tag": {
+    "no-posts": "Uma coleção de artigos",
+    "one-post": "Uma coleção de 1 artigo",
+    "multiple-posts": "Uma coleção de {{ postCount }} artigos"
+  },
+  "404": {
+    "page-not-found": "Página não encontrada",
+    "go-to-front-page": "Ir para a página inicial"
+  },
+  "social-row": {
+    "cta": {
+      "tweet-a-thanks": "Se você leu até aqui, agradeça ao autor para mostrar que você se importa com o trabalho. {{ <0> }}Agradeça{{ </0> }}",
+      "tweet-it": "Se este artigo foi útil, {{ <0> }}compartilhe-o{{ </0> }}."
+    },
+    "tweets": {
+      "default": "Obrigado, {{ author }}, por ter escrito este artigo. Foi muito útil.",
+      "translation": "Obrigado {{ author }} por escrever este artigo útil e {{ translator }} por traduzi-lo."
+    }
+  },
+  "learn-to-code-cta": "Aprenda a programar gratuitamente. O plano de estudos em código aberto do freeCodeCamp já ajudou mais de 40.000 pessoas a obter empregos como desenvolvedores. {{ <0> }}Comece agora{{ </0> }}",
+  "original-author-translator": {
+    "roles": {
+      "author": "Autor: {{ name }} (em {{ locale }})",
+      "translator": "Tradutor: {{ name }}"
+    },
+    "details": {
+      "original-article": "{{ <0> }}Artigo original:{{ </0> }} {{ title }}"
+    },
+    "locales": {
+      "chinese": "chinês",
+      "english": "inglês",
+      "espanol": "espanhol",
+      "italian": "italiano",
+      "japanese": "japonês",
+      "korean": "coreano",
+      "portuguese": "português",
+      "ukrainian": "ucraniano"
+    }
+  },
+  "embed-title": "Conteúdo incorporado",
+  "footer": {
+    "tax-exempt-status": "O freeCodeCamp é uma organização beneficente 501(c)(3), isenta de impostos e apoiada por doações (Número de identificação fiscal federal dos Estados Unidos: 82-0779546).",
+    "mission-statement": "Nossa missão: ajudar as pessoas a aprender a programar de forma gratuita. Conseguimos isso criando milhares de vídeos, artigos e lições de programação interativas, todas disponíveis gratuitamente para o público.",
+    "donation-initiatives": "As doações feitas ao freeCodeCamp vão para nossas iniciativas educacionais e ajudam a pagar servidores, serviços e a equipe.",
+    "donate-text": "Você pode fazer {{ <0> }}uma doação dedutível de impostos aqui{{ </0> }}.",
+    "trending-books-and-handbooks": "Livros e manuais mais procurados",
+    "mobile-app": "Aplicativo móvel",
+    "our-nonprofit": "Nossa instituição",
+    "links": {
+      "powered-by": "Publicação fornecida por Hashnode",
+      "about": "Sobre",
+      "alumni": "Rede de ex-alunos",
+      "open-source": "Código aberto",
+      "shop": "Loja",
+      "support": "Apoio",
+      "sponsors": "Patrocinadores",
+      "honesty": "Honestidade acadêmica",
+      "coc": "Código de conduta",
+      "privacy": "Política de privacidade",
+      "tos": "Termos de serviço",
+      "copyright": "Política de direitos de autor"
+    }
+  },
+  "fallback": {
+    "message": "Seu navegador não oferece suporte a {{ element }} do HTML5.",
+    "audio": "áudio",
+    "video": "vídeo"
+  },
+  "ad-text": "Anúncio"
+}

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        {# Fall back to localized meta title if no specific title is set from a post, page, etc. #}
+        {% if title %}
+            <title>{{ title }}</title>
+        {% else %}
+            <title>{% t 'meta-tags:title' %}</title>
+        {% endif %}
+        <meta name="HandheldFriendly" content="True" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script>
+            (function() {
+                var theme = localStorage.getItem('theme');
+                if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark-mode');
+                }
+            })();
+        </script>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Roboto+Mono:wght@400;700&display=swap">
+        {% if site.lang === 'ja' %}
+            <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Roboto+Mono:wght@400;700&display=swap">
+        {% endif %}
+
+        {# Load Prism styles and scripts only for posts / pages #}
+        {% block prism %}
+        {% endblock %}
+
+        {# Font Awesome CDN #}
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/fontawesome.min.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/solid.min.css"/>
+
+        {# News Theme Styles #}
+        <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="{% cacheBuster '/assets/css/global.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% cacheBuster '/assets/css/variables.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% cacheBuster '/assets/css/print.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% cacheBuster '/assets/css/screen.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% cacheBuster '/assets/css/search-bar.css' %}" />
+
+        {# Algolia search assets #}
+        <script defer src="https://cdn.freecodecamp.org/news-assets/algolia/algoliasearch/5.46.3/lite/browser.umd.js"></script>
+        <script defer src="https://cdn.freecodecamp.org/news-assets/algolia/autocomplete/1.19.4/index.production.min.js"></script>
+
+        {# Day.js and plugins for localization and formatting #}
+        <script defer src="https://cdn.freecodecamp.org/news-assets/dayjs/1.10.4/dayjs.min.js"></script>
+        <script defer src="https://cdn.freecodecamp.org/news-assets/dayjs/1.10.4/localizedFormat.min.js"></script>
+        <script defer src="https://cdn.freecodecamp.org/news-assets/dayjs/1.10.4/relativeTime.min.js"></script>
+
+        {# Dynamically load Day.js locale #}
+        {% if siteLang !== "en" %}
+            <script defer src="https://cdn.freecodecamp.org/news-assets/dayjs/1.10.4/locale/{{ site.lang | lower }}.min.js"></script>
+        {% endif %}
+
+        {% set js %}
+            {% include "assets/js/search-bar.js" %}
+            {% include "assets/js/client-dayjs.js" %}
+            {% include "assets/js/cookie-checker.js" %}
+            {% include "assets/js/nav-dropdowns.js" %}
+            {% include "assets/js/dark-mode.js" %}
+        {% endset %}
+        <script>{{ js | jsMin | safe }}</script>
+
+        {% if canonicalUrl | shouldCanonicalHaveGAM %}
+            <script src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous" async></script>
+        {% endif %}
+
+        {# Dynamically load Adsense scripts #}
+        {% block monetization %}
+        {% endblock %}
+
+        {% if secrets.eleventyEnv === 'prod' %}
+            {% include "partials/gtm-head.njk" %}
+        {% endif %}
+
+        {# Dynamically load MathJax script #}
+        {% block mathjax %}
+        {% endblock %}
+
+        {# Pulls scripts that can be safely cached and placed / defered
+        in the head, but that we want to include only when readers go to
+        specific pages that require them (ex. published-date.js on the
+        search results page). #}
+        {% block headScripts %}
+        {% endblock %}
+
+        {# Both of these meta tags only appear in this form on the landing and
+        search pages. In other contexts, the description is an excerpt, and
+        and there is no keywords meta tag. Instead, the tag names act as
+        keywords in structured data. #}
+        {% if not permalink or permalink === "/search/" %}
+            <meta name="keywords" content="{% t 'meta-tags:keywords' %}">
+            <meta name="description" content="{% t 'meta-tags:description' %}">
+        {% endif %}
+
+        <link rel="icon" href="{{ site.icon }}" type="image/png">
+        {# Fall back to site URL with trailing slash if no canonical URL is set #}
+        {% if canonicalUrl %}
+            <link rel="canonical" href="{{ canonicalUrl }}">
+        {% else %}
+            <link rel="canonical" href="{{ page.url | htmlBaseUrl(site.url) }}">
+        {% endif %}
+        <meta name="referrer" content="no-referrer-when-downgrade">
+
+        {% if pagination.nextPageHref | nextPageExists %}
+            {# Updated dynamically by src/_includes/pagination.js #}
+            <link rel="next" href="">
+        {% endif %}
+
+        {% block seo %}
+            {# Facebook OpenGraph #}
+            <meta property="og:site_name" content="{{ site.title }}">
+            <meta property="og:type" content="website">
+            <meta property="og:title" content="{{ site.title }}">
+            <meta property="og:description" content="{% t 'meta-tags:description' %}">
+            <meta property="og:url" content="{{ page.url | htmlBaseUrl(site.url) }}">
+            <meta property="og:image" content="{{ site.cover_image }}">
+            <meta property="article:publisher" content="{{ site.facebook }}">
+
+            {# X / Twitter Card #}
+            <meta name="twitter:card" content="summary_large_image">
+            <meta name="twitter:title" content="{{ site.title }}">
+            <meta name="twitter:description" content="{% t 'meta-tags:description' %}">
+            <meta name="twitter:url" content="{{ page.url | htmlBaseUrl(site.url) }}">
+            <meta name="twitter:image" content="{{ site.cover_image }}">
+            <meta name="twitter:site" content="{{ site.twitter_handle }}">
+
+            <meta property="og:image:width" content="{{ site.image_dimensions.cover_image.width }}">
+            <meta property="og:image:height" content="{{ site.image_dimensions.cover_image.height }}">
+        {% endblock %}
+
+        {% block jsonLd %}
+        {% endblock %}
+
+        <meta name="generator" content="Eleventy">
+        <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ '/rss/' | htmlBaseUrl(site.url) }}">
+
+        {{ site.codeinjection_head | safe if site.codeinjection_head }}
+        {{ codeinjection_head | safe if codeinjection_head }}
+
+        {% block datasourceInfo %}
+        {% endblock %}
+    </head>
+
+    {% if site.lang in ['ar', 'fa', 'ur', 'he'] %}
+        <body class="home-template rtl-layout">
+    {% else %}
+        <body class="home-template">
+    {% endif %}
+
+    {% if secrets.eleventyEnv === 'prod' %}
+        {% include "partials/gtm-body.njk" %}
+    {% endif %}
+
+        <div class="site-wrapper">
+            {% include "partials/site-nav.njk" %}
+
+            {# CTA banner #}
+            {% include "partials/banner.njk" %}
+
+            <div id="error-message"></div>
+
+            {% block content %}
+            {% endblock content %}
+
+            {% include "partials/footer.njk" %}
+        </div>
+
+        {# Pulls scripts from other template files and include them after all assets
+        have loaded / global setup is complete. For example, there's some JS which
+        we only want to use in search-results.njk, but it needs to be included here
+        after the global Algolia setup in src/_includes/assets/js/algolia.js. #}
+        {% block scripts %}
+        {% endblock scripts %}
+
+        {{ site.codeinjection_foot | safe if site.codeinjection_foot }}
+        {{ codeinjection_foot | safe if codeinjection_foot }}
+    </body>
+</html>

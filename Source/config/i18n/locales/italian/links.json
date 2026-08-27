@@ -1,0 +1,17 @@
+{
+  "forum": "https://forum.freecodecamp.org/c/italiano/535",
+  "learn": "https://www.freecodecamp.org/italian/learn",
+  "donate": "https://www.freecodecamp.org/italian/donate",
+  "banner": {
+    "default": "https://forum.freecodecamp.org/t/contribuire-a-tradurre-freecodecamp-in-italiano/479009/",
+    "authenticated": "https://www.freecodecamp.org/italian/donate",
+    "authenticated-donor": "https://www.freecodecamp.org/news/how-to-donate-to-free-code-camp/"
+  },
+  "twitter": "https://twitter.com/freeCodeCampIT",
+  "footer": {
+    "about": "https://www.freecodecamp.org/italian/news/faq/",
+    "support": "https://www.freecodecamp.org/italian/news/domande-frequenti-supporto-tecnico-freecodecamp-faq/",
+    "honesty": "https://www.freecodecamp.org/italian/news/freecodecamps-academic-honesty-policy/",
+    "coc": "https://www.freecodecamp.org/italian/news/codice-di-condotta/"
+  }
+}

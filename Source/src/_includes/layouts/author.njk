@@ -1,0 +1,59 @@
+{% extends 'layouts/default.njk' %}
+{% from "partials/card.njk" import card %}
+
+{% set title = author.name + " - " + site.title %}
+{% set canonicalUrl = author.path | htmlBaseUrl(site.url) %}
+{% set defaultDescription %}{% t 'meta-tags:description' %}{% endset %}
+
+{% block content %}
+    {% include "partials/author-info.njk" %}
+
+    <main id="site-main" class="site-main outer">
+        <div class="inner">
+            <section class="post-feed">
+                {% if author.posts %}
+                    {% for post in author.posts %}
+                        {{ card(post, loop.index0) }}
+                    {% endfor %}
+                {% endif %}
+            </section>
+            {% include "partials/pagination.njk" %}
+        </div>
+    </main>
+{% endblock %}
+
+{% block seo %}
+    {% if author.bio %}
+        <meta name="description" content="{{ author.bio }}">
+    {% endif %}
+
+    {# Facebook OpenGraph #}
+    <meta property="og:site_name" content="{{ site.title }}">
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ author.bio if author.bio else defaultDescription }}">
+    <meta property="og:url" content="{{ author.path | htmlBaseUrl(site.url) }}">
+    <meta property="og:image" content="{{ author.cover_image if author.cover_image else site.cover_image }}">
+    <meta property="article:publisher" content="{{ site.facebook }}">
+    {% if author.facebook_username %}
+        <meta property="article:author" content="{{ author.facebook_username }}">
+    {% endif %}
+
+    {# X / Twitter Card #}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ title }}">
+    <meta name="twitter:description" content="{{ author.bio if author.bio else defaultDescription }}">
+    <meta name="twitter:url" content="{{ author.path | htmlBaseUrl(site.url) }}">
+    <meta name="twitter:image" content="{{ author.cover_image if author.cover_image else site.cover_image }}">
+    <meta name="twitter:site" content="{{ site.twitter_handle }}">
+    {% if author.twitter_handle %}
+        <meta name="twitter:creator" content="{{ author.twitter_handle }}">
+    {% endif %}
+
+    <meta property="og:image:width" content="{{ author.image_dimensions.cover_image.width if author.image_dimensions.cover_image else site.image_dimensions.cover_image.width }}">
+    <meta property="og:image:height" content="{{ author.image_dimensions.cover_image.height if author.image_dimensions.cover_image else site.image_dimensions.cover_image.height }}">
+{% endblock %}
+
+{% block jsonLd %}
+    <script type="application/ld+json">{% createJSONLD 'author', site, author %}</script>
+{% endblock %}

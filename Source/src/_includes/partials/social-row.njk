@@ -1,0 +1,22 @@
+{% if post.primary_author.twitter_handle or post.original_post.primary_author.twitter_handle %}
+    {% set tweetCTAKey = 'social-row.cta.tweet-a-thanks' %}
+{% else %}
+    {% set tweetCTAKey = 'social-row.cta.tweet-it' %}
+{% endif %}
+
+<p data-test-label="social-row-cta" class="social-row">
+    {% t tweetCTAKey, {
+        '<0>': '<button id="tweet-btn" class="cta-button" data-test-label="tweet-button">',
+        '</0>': '</button>',
+        interpolation: {
+            escapeValue: false
+        }
+    } %}
+</p>
+
+{% block scripts %}
+    {% set js %}
+        {% include "assets/js/social-row.js" %}
+    {% endset %}
+    <script>{{ js | jsMin | safe }}</script>
+{% endblock %}

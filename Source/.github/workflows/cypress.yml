@@ -1,0 +1,73 @@
+name: CI - Cypress (e2e) tests
+on:
+  push:
+    branches-ignore:
+      - renovate/**
+  pull_request:
+
+jobs:
+  cypress-run:
+    name: E2E
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        node-version: [24.x]
+        browsers: [chrome, firefox]
+        languages: [english, chinese, espanol]
+
+    env:
+      BUILD_LANG: ${{ matrix.languages }}
+
+      CHINESE_GHOST_API_URL: ${{ secrets.CI_CHINESE_GHOST_API_URL }}
+      CHINESE_GHOST_API_VERSION: ${{ secrets.CI_CHINESE_GHOST_API_VERSION }}
+      CHINESE_GHOST_CONTENT_API_KEY: ${{ secrets.CI_CHINESE_GHOST_CONTENT_API_KEY }}
+
+      ESPANOL_GHOST_API_URL: ${{ secrets.CI_ESPANOL_GHOST_API_URL }}
+      ESPANOL_GHOST_API_VERSION: ${{ secrets.CI_ESPANOL_GHOST_API_VERSION }}
+      ESPANOL_GHOST_CONTENT_API_KEY: ${{ secrets.CI_ESPANOL_GHOST_CONTENT_API_KEY }}
+
+      HASHNODE_API_URL: api_url_from_hashnode_dashboard
+      ENGLISH_HASHNODE_HOST: host_from_hashnode_dashboard
+
+      ADS_ENABLED: true
+      GOOGLE_ADSENSE_DATA_AD_CLIENT: ca-pub-1234567890
+      GOOGLE_ADSENSE_DATA_AD_SLOT: 1234567890
+
+      POSTS_PER_PAGE: ${{ secrets.POSTS_PER_PAGE }}
+
+      SITE_DOMAIN: localhost:8080
+
+      LOCALE_FOR_UI: ${{ matrix.languages }}
+      LOCALE_FOR_GHOST: ${{ matrix.languages }}
+
+    steps:
+      - name: Checkout source files
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093 # v6
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Start Ghost containers
+        run: pnpm run start:containers
+
+      - name: Start CI server and run Cypress
+        uses: cypress-io/github-action@dace029018fcdf86e0df89a31bc3cfa5b32570d8 # v7.3.0
+        with:
+          start: pnpm run start:ci:${{ matrix.languages }}
+          wait-on: http://localhost:8080
+          wait-on-timeout: 1200
+          browser: ${{ matrix.browsers }}
+          headless: true
+          spec: cypress/e2e/${{ matrix.languages }}/**/*
+
+      - name: Stop Ghost containers
+        run: pnpm run stop:containers

@@ -1,0 +1,10 @@
+{% if pagination.nextPageHref | nextPageExists %}
+    <div class="read-more-row">
+        <button id="readMoreBtn" data-test-label="load-more-articles-button">{% t 'buttons.load-more-articles' %}</button>
+    </div>
+
+    {% set js %}
+        {% include "assets/js/pagination.js" %}
+    {% endset %}
+    <script>{{ js | jsMin | safe }}</script>
+{% endif %}

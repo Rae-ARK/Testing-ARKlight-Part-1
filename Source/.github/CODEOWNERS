@@ -1,0 +1,42 @@
+# -------------------------------------------------
+# CODEOWNERS - For automated review request for
+# high impact files.
+#
+# Important: The order in this file cascades.
+#
+# https://help.github.com/articles/about-codeowners
+# -------------------------------------------------
+
+# -------------------------------------------------
+# All files are owned by dev team
+# -------------------------------------------------
+
+* @freecodecamp/dev-team
+
+# --- Owned by none (negate rule above) ---
+
+package.json
+package-lock.json
+
+# -------------------------------------------------
+# All files in the root are owned by dev team
+# -------------------------------------------------
+
+/* @freecodecamp/dev-team
+
+# --- Owned by none (negate rule above) ---
+
+/package.json
+/package-lock.json
+
+# -------------------------------------------------
+# Exception for i18n PRs
+# -------------------------------------------------
+
+/config/i18n/locales/**/*.json @freecodecamp/i18n
+
+# -------------------------------------------------
+# Revert override for English because codeowners
+# doesn't support negation?
+# -------------------------------------------------
+/config/i18n/locales/english/*.json @freecodecamp/dev-team

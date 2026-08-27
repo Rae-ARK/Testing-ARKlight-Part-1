@@ -1,0 +1,106 @@
+{% extends 'layouts/default.njk' %}
+
+{% set title = doc.title %}
+{% set canonicalUrl = doc.path | htmlBaseUrl(site.url) %}
+{% set codeinjection_head = doc.codeinjection_head %}
+{% set codeinjection_foot = doc.codeinjection_foot %}
+
+{% block prism %}
+    {% include "partials/prism.njk" %}
+{% endblock %}
+
+{% block content %}
+    <main id="site-main" class="page-template site-main outer">
+        <div class="inner">
+            <article class="post-full post {{ "no-image" if not (doc.feature_image) }}">
+                <header class="post-full-header">
+                    <h1 class="post-full-title" data-test-label="post-full-title">{{ title }}</h1>
+                </header>
+                {% if doc.feature_image %}
+                    <figure class="post-full-image">
+                        {%
+                            featureImage
+                            doc.feature_image,
+                            (title | escape),
+                            "(max-width: 800px) 400px,
+                             (max-width: 1170px) 700px,
+                             1400px",
+                            [300, 600, 1000, 2000],
+                            doc.image_dimensions.feature_image
+                        %}
+                    </figure>
+                {% endif %}
+                <section class="post-full-content">
+                    <section class="post-content" data-test-label="post-content">
+                        {{ content | safe }}
+                    </section>
+                    <hr />
+
+                    {# Conditionally include partials based on Ghost language setting #}
+                    {% ifAsync site.lang === "zh" %}
+                        {% include "partials/learn-cta-row.njk" %}
+                    {% else %}
+                        {% include "partials/social-row.njk" %}
+                        {% include "partials/learn-cta-row.njk" %}
+                    {% endif %}
+                </section>
+            </article>
+        </div>
+    </main>
+{% endblock %}
+
+{% block seo %}
+    <meta name="description" content="{{ doc.excerpt }}">
+
+    {# Facebook OpenGraph #}
+    <meta property="og:site_name" content="{{ site.title }}">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ title }}">
+    {% if doc.excerpt %}
+        <meta property="og:description" content="{{ doc.excerpt }}">
+    {% endif %}
+    <meta property="og:url" content="{{ doc.path | htmlBaseUrl(site.url) }}">
+    <meta property="og:image" content="{{ doc.feature_image }}">
+    {% if doc.published_at %}
+        <meta property="article:published_time" content="{% toISOString doc.published_at %}">
+    {% endif %}
+    {% if doc.updated_at %}
+        <meta property="article:modified_time" content="{% toISOString doc.updated_at %}">
+    {% endif %}
+    {% for tag in doc.tags %}
+        <meta property="article:tag" content="{{ tag.name }}">
+    {% endfor %}
+    <meta property="article:publisher" content="{{ site.facebook }}">
+    {% if doc.primary_author.facebook_username %}
+        <meta property="article:author" content="{{ doc.primary_author.facebook_username }}">
+    {% endif %}
+
+    {# X / Twitter Card #}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ title }}">
+    {% if doc.excerpt %}
+        <meta name="twitter:description" content="{{ doc.excerpt }}">
+    {% endif %}
+    <meta name="twitter:url" content="{{ doc.path | htmlBaseUrl(site.url) }}">
+    <meta name="twitter:image" content="{{ doc.feature_image }}">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="{{ doc.primary_author.name if doc.primary_author else 'freeCodeCamp.org' }}">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="{{ doc.tags | join(", ", "name") }}">
+    <meta name="twitter:site" content="{{ site.twitter_handle }}">
+    {% if doc.primary_author.twitter_handle %}
+        <meta name="twitter:creator" content="{{ doc.primary_author.twitter_handle }}">
+    {% endif %}
+
+    <meta property="og:image:width" content="{{ doc.image_dimensions.feature_image.width }}">
+    <meta property="og:image:height" content="{{ doc.image_dimensions.feature_image.height }}">
+{% endblock %}
+
+{% block jsonLd %}
+    <script type="application/ld+json">{% createJSONLD 'article', site, doc %}</script>
+{% endblock %}
+
+{# Note: We can remove this once we source all pages from a single CMS #}
+{% block datasourceInfo %}
+  <meta name="x-fcc-source" data-test-label="x-fcc-source" content="{{ doc.source }}">
+{% endblock %}

@@ -1,0 +1,272 @@
+import commonExpectedMeta from '../../../fixtures/common-expected-meta.json';
+import { loadAllPosts } from '../../../support/utils/post-cards';
+
+const selectors = {
+  featureImage: "[data-test-label='feature-image']",
+  postCard: "[data-test-label='post-card']",
+  authorList: "[data-test-label='author-list']",
+  authorListItem: "[data-test-label='author-list-item']",
+  authorProfileImage: "[data-test-label='profile-image']",
+  avatar: "[data-test-label='avatar']",
+  siteNavLogo: "[data-test-label='site-nav-logo']",
+  postPublishedTime: "[data-test-label='post-published-time']",
+  banner: "[data-test-label='banner']",
+  dropDownMenu: "[data-test-label='header-menu']",
+  toggleDropDownMenuButton: "[data-test-label='header-menu-button']",
+  darkModeButton: "[data-test-label='dark-mode-button']",
+  toggleLangButton: "[data-test-label='header-toggle-lang-button']",
+  languageList: "[data-test-label='header-lang-list']",
+  languageButton: "[data-test-label='header-lang-list-option']"
+};
+
+describe('Landing (Hashnode sourced)', () => {
+  context('General tests', () => {
+    beforeEach(() => {
+      cy.visit('/');
+      loadAllPosts();
+    });
+
+    // Tests here should apply to all landing pages, regardless of the source
+    it('should render basic components', () => {
+      cy.get('nav').should('be.visible');
+      cy.get('.banner').should('be.visible');
+      cy.get('footer').should('be.visible');
+    });
+
+    it('the fCC logo in the nav should link to the full URL of the landing page', () => {
+      cy.get(selectors.siteNavLogo).should(
+        'have.attr',
+        'href',
+        commonExpectedMeta.english.siteUrl
+      );
+    });
+
+    const visit = (darkAppearance: boolean) =>
+      cy.visit('/', {
+        onBeforeLoad(win) {
+          cy.stub(win, 'matchMedia')
+            .withArgs('(prefers-color-scheme: dark)')
+            .returns({
+              matches: darkAppearance
+            });
+        }
+      });
+
+    it('The dark mode button should be able to change the theme to dark mode from light mode', function () {
+      visit(false);
+      cy.get(selectors.toggleDropDownMenuButton).click();
+      cy.get(selectors.darkModeButton).click();
+
+      cy.get('html', { timeout: 1000 }).should('have.class', 'dark-mode');
+    });
+
+    it('The dark mode button should be able to change the theme to light mode from dark mode', function () {
+      visit(true);
+      cy.get(selectors.toggleDropDownMenuButton).click();
+      cy.get(selectors.darkModeButton).click();
+
+      cy.get('html', { timeout: 1000 }).should('not.have.class', 'dark-mode');
+    });
+
+    it('The theme should be set to dark and update the value in localStorage to dark', function () {
+      // Load in light mode regardless of the OS/browser color-scheme so the
+      // toggle deterministically turns dark mode *on*
+      cy.clearLocalStorage();
+      cy.clearCookies();
+      visit(false);
+      cy.get(selectors.toggleDropDownMenuButton).click();
+      cy.get(selectors.darkModeButton).click();
+      cy.window().then(win => {
+        expect(win.localStorage.getItem('theme')).to.equal('dark');
+      });
+    });
+
+    // Because all templates readers see use `default.njk` as a base,
+    // we can test the favicon here
+    it('should have a favicon', () => {
+      cy.get('head link[rel="icon"]')
+        .should('have.attr', 'href')
+        .should('equal', commonExpectedMeta.favicon.ico);
+    });
+
+    it('the default banner text should be default if not authenticated', function () {
+      cy.get(selectors.banner).contains(
+        'Learn Software Engineering Fundamentals – Try Our FREE Curriculum'
+      );
+    });
+
+    it('the default banner text should link to the homepage', function () {
+      cy.get(selectors.banner)
+        .should('have.attr', 'href')
+        .should('equal', 'https://www.freecodecamp.org/');
+    });
+
+    it('the authenticated banner text should tell people to donate', function () {
+      cy.setCookie('jwt_access_token', 'dadadsdadsadasd');
+      cy.visit('/');
+      cy.get(selectors.banner).contains(
+        'Support our charity and our mission. Donate to freeCodeCamp.org.'
+      );
+    });
+
+    it('the authenticated banner link should link to the donate page', function () {
+      cy.setCookie('jwt_access_token', 'dadadsdadsadasd');
+      cy.visit('/');
+      cy.get(selectors.banner)
+        .should('have.attr', 'href')
+        .should('equal', 'https://www.freecodecamp.org/donate');
+    });
+
+    it('the donor banner text should thank people', function () {
+      cy.setCookie('jwt_access_token', 'dadadsdadsadasd');
+      cy.setCookie('isDonor', 'true');
+      cy.visit('/');
+      cy.get(selectors.banner).contains(
+        'Thank you for supporting freeCodeCamp through your donations.'
+      );
+    });
+
+    it('the donor banner should link to how to donate', function () {
+      cy.setCookie('jwt_access_token', 'dadadsdadsadasd');
+      cy.setCookie('isDonor', 'true');
+      cy.visit('/');
+      cy.get(selectors.banner)
+        .should('have.attr', 'href')
+        .should(
+          'equal',
+          'https://www.freecodecamp.org/news/how-to-donate-to-free-code-camp/'
+        );
+    });
+  });
+
+  context('Language button', () => {
+    beforeEach(() => {
+      cy.visit('/');
+    });
+
+    it('Clicking the "Change Language" button should open the language list', () => {
+      cy.get(selectors.toggleLangButton).should('be.visible');
+      cy.get(selectors.toggleLangButton).click();
+      cy.get(selectors.languageList).should('be.visible');
+    });
+
+    it('The language list should contain a button for each available language', () => {
+      cy.env(['locales']).then(({ locales }) => {
+        cy.get(selectors.toggleLangButton).should('be.visible');
+        cy.get(selectors.toggleLangButton).click();
+        cy.get(selectors.languageList).should('be.visible');
+        cy.get(selectors.languageList)
+          .children()
+          .should('have.length', locales.length);
+      });
+    });
+  });
+
+  context('Toggle menu button', () => {
+    beforeEach(() => {
+      cy.visit('/');
+      loadAllPosts();
+    });
+
+    it('When the page is first loaded, the dropdown menu should not have the `display-menu` class', () => {
+      cy.get(selectors.dropDownMenu).should('not.have.class', 'display-menu');
+      cy.get(selectors.toggleDropDownMenuButton).should(
+        'have.attr',
+        'aria-expanded',
+        'false'
+      );
+      cy.get(selectors.dropDownMenu).should('have.css', 'display', 'none');
+    });
+
+    it("When the toggle menu dropdown button is hit and the menu is not visible, it should get the 'display-menu' class", () => {
+      cy.get(selectors.toggleDropDownMenuButton).click();
+      cy.get(selectors.dropDownMenu).should('have.class', 'display-menu');
+      cy.get(selectors.toggleDropDownMenuButton).should(
+        'have.attr',
+        'aria-expanded',
+        'true'
+      );
+      cy.get(selectors.dropDownMenu).should('have.css', 'display', 'block');
+    });
+
+    it("When the toggle menu dropdown button is hit twice and the menu is not visible, it should not have the 'display-menu' class", () => {
+      cy.get(selectors.toggleDropDownMenuButton).click();
+      cy.get(selectors.toggleDropDownMenuButton).click();
+      cy.get(selectors.dropDownMenu).should('not.have.class', 'display-menu');
+      cy.get(selectors.toggleDropDownMenuButton).should(
+        'have.attr',
+        'aria-expanded',
+        'false'
+      );
+      cy.get(selectors.dropDownMenu).should('have.css', 'display', 'none');
+    });
+  });
+
+  context('Feature image', () => {
+    beforeEach(() => {
+      cy.visit('/');
+      loadAllPosts();
+    });
+
+    it('each post card should contain a feature image', () => {
+      const numberOfPosts = Cypress.$(selectors.postCard).length;
+
+      cy.get(selectors.featureImage).should('have.length', numberOfPosts);
+    });
+
+    it('posts with no feature image should fall back to the default fCC indigo image', () => {
+      cy.contains('Hashnode No Feature Image')
+        .parents('.post-card')
+        .find<HTMLImageElement>(selectors.featureImage)
+        .then($el =>
+          expect($el[0].src).to.equal(
+            'https://cdn.freecodecamp.org/platform/universal/fcc_meta_1920X1080-indigo.png'
+          )
+        );
+    });
+  });
+
+  // Hashnode provides a default image for authors who don't upload a profile picture,
+  // so basic tests for profile images are fine
+  context('Authors with profile image', () => {
+    beforeEach(() => {
+      cy.visit('/');
+      loadAllPosts();
+    });
+
+    it("should show the author's profile image", () => {
+      cy.get(selectors.postCard)
+        .contains(
+          'Ben Awad is a GameDev Who Sleeps 9 Hours EVERY NIGHT to be Productive [Podcast #121]'
+        )
+        .parents('article')
+        .find(selectors.authorProfileImage)
+        .then($el => expect($el[0].tagName.toLowerCase()).to.equal('img'));
+    });
+
+    it("the author profile image should contain an `alt` attribute with the author's name", () => {
+      cy.get(selectors.postCard)
+        .contains(
+          'Ben Awad is a GameDev Who Sleeps 9 Hours EVERY NIGHT to be Productive [Podcast #121]'
+        )
+        .parents('article')
+        .find<HTMLImageElement>(selectors.authorProfileImage)
+        .then($el => expect($el[0].alt).to.equal('Quincy Larson'));
+    });
+  });
+
+  context('freeCodeCamp author', () => {
+    beforeEach(() => {
+      cy.visit('/');
+      loadAllPosts();
+    });
+
+    it("posts written by 'freeCodeCamp' should not show the `author-list`, which contain's the author's name and profile image", () => {
+      cy.get(selectors.postCard)
+        .contains('How Does Recursion Work? Explained with Code Examples')
+        .parents('article')
+        .find(selectors.authorList)
+        .should('not.exist');
+    });
+  });
+});

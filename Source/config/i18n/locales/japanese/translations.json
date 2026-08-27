@@ -1,0 +1,101 @@
+{
+  "buttons": {
+    "forum": "フォーラム",
+    "donate": "寄付",
+    "load-more-articles": "もっと見る",
+    "menu": "Menu",
+    "learn": "Curriculum",
+    "toggle-dark-mode": "Night Mode",
+    "change-language": "Change Language"
+  },
+  "search": {
+    "label": "検索",
+    "accessible-name": "検索クエリを送信",
+    "placeholder": {
+      "default": "Search our news articles, tutorials, and books",
+      "numbered": "Search {{ roundedTotalRecords }}+ news articles, tutorials, and books"
+    },
+    "see-results": "{{ searchQuery }} のすべての結果を見る",
+    "no-results": "No results found"
+  },
+  "banner": {
+    "default": "Learn Software Engineering Fundamentals – {{ <0> }}Try Our FREE Curriculum{{ </0> }}",
+    "authenticated": "当団体とその使命をご支援ください。{{ <0> }}freeCodeCamp.org へのご寄付をお願いします{{ </0> }}。",
+    "authenticated-donor": "freeCodeCamp への{{ <0> }}寄付{{ </0> }}によるご支援、誠にありがとうございます。"
+  },
+  "default-bio": "{{ <0> }}他の投稿{{ </0> }}を読む。",
+  "author": {
+    "no-posts": "投稿なし",
+    "one-post": "1 件の投稿",
+    "multiple-posts": "{{ postCount }} 件の投稿"
+  },
+  "tag": {
+    "no-posts": "投稿一覧",
+    "one-post": "1 件の投稿",
+    "multiple-posts": "{{ postCount }} 件の投稿"
+  },
+  "404": {
+    "page-not-found": "ページが見つかりません",
+    "go-to-front-page": "トップページに移動"
+  },
+  "social-row": {
+    "cta": {
+      "tweet-a-thanks": "お読みいただきありがとうございます。ぜひ著者にも感謝のコメントを伝えましょう。{{ <0> }}共有{{ </0> }}",
+      "tweet-it": "この記事が参考になりましたらぜひシェアしてください。{{ <0> }}共有{{ </0> }}"
+    },
+    "tweets": {
+      "default": "この記事が参考になりました。{{ author }} さんありがとうございます。",
+      "translation": "この記事が役に立ちました。著者の {{ author }} さん、翻訳者の {{ translator }} さん、ありがとうございます。"
+    }
+  },
+  "learn-to-code-cta": "コーディングを無料で学びましょう。freeCodeCamp のオープンソースカリキュラムによって、40,000 人以上の人々が開発者としての仕事を得ています。{{ <0> }}始める{{ </0> }}",
+  "original-author-translator": {
+    "roles": {
+      "author": "著者: {{ name }} ({{ locale }})",
+      "translator": "翻訳: {{ name }}"
+    },
+    "details": {
+      "original-article": "{{ <0> }}原文:{{ </0> }} {{ title }}"
+    },
+    "locales": {
+      "chinese": "中国語",
+      "english": "英語",
+      "espanol": "スペイン語",
+      "italian": "イタリア語",
+      "japanese": "日本語",
+      "korean": "韓国語",
+      "portuguese": "ポルトガル語",
+      "ukrainian": "ウクライナ語"
+    }
+  },
+  "embed-title": "埋め込みコンテンツ",
+  "footer": {
+    "tax-exempt-status": "freeCodeCamp は皆様からの寄付により支えられている非課税の 501(c)(3) 慈善団体です。(United States Federal Tax Identification Number: 82-0779546)",
+    "mission-statement": "私たちのミッション: 人々が無料でコーディングを学べるよう支援することです。その実現のため、何千もの動画、記事、インタラクティブなコーディングレッスンを作成し、すべて無料で公開しています。",
+    "donation-initiatives": "freeCodeCamp への寄付は教育活動のために用いられ、サーバー、サービス、スタッフなどの費用に充てられます。",
+    "donate-text": "{{ <0> }}こちらからご寄付をお願いいたします{{ </0> }}。(場合により税控除可能)",
+    "trending-books-and-handbooks": "人気の記事",
+    "mobile-app": "アプリ",
+    "our-nonprofit": "組織情報",
+    "links": {
+      "powered-by": "Publication powered by Hashnode",
+      "about": "私たちについて",
+      "alumni": "卒業生ネットワーク",
+      "open-source": "オープンソース",
+      "shop": "ショップ",
+      "support": "サポート",
+      "sponsors": "スポンサー",
+      "honesty": "学問的誠実性",
+      "coc": "行動規範",
+      "privacy": "プライバシーポリシー",
+      "tos": "利用規約",
+      "copyright": "コピーライトポリシー"
+    }
+  },
+  "fallback": {
+    "message": "お使いのブラウザは HTML5 {{ element }} をサポートしていません。",
+    "audio": "オーディオ",
+    "video": "ビデオ"
+  },
+  "ad-text": "広告"
+}

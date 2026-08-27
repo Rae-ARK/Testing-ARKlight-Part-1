@@ -1,0 +1,53 @@
+---
+permalink: '/search/'
+---
+
+{% extends 'layouts/default.njk' %}
+
+{% set codeinjection_head = doc.codeinjection_head %}
+{% set codeinjection_foot = doc.codeinjection_foot %}
+
+{% set searchLabel %}{% t 'search.label' %}{% endset %}
+{% set title = searchLabel + " - " + site.title %}
+
+{% block content %}
+    <main id="site-main" class="site-main outer">
+        <div class="inner">
+            <div class="post-feed">
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block headScripts %}
+    <script defer src="{% cacheBuster '/assets/js/published-date.js' %}"></script>
+{% endblock %}
+
+{% block scripts %}
+    {% set js %}
+        {% include "assets/js/search-results.js" %}
+    {% endset %}
+    <script>{{ js | jsMin | safe }}</script>
+{% endblock %}
+
+{% block seo %}
+    {# Facebook OpenGraph #}
+    <meta property="og:site_name" content="{{ site.title }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ site.title }}">
+    <meta property="og:description" content="{% t 'meta-tags:description' %}">
+    <meta property="og:url" content="{{ permalink | htmlBaseUrl(site.url) }}">
+    <meta property="og:image" content="{{ site.cover_image }}">
+    <meta property="article:publisher" content="{{ site.facebook }}">
+
+    {# X / Twitter Card #}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ site.title }}">
+    <meta name="twitter:description" content="{% t 'meta-tags:description' %}">
+    <meta name="twitter:url" content="{{ permalink | htmlBaseUrl(site.url) }}">
+    <meta name="twitter:image" content="{{ site.cover_image }}">
+    <meta name="twitter:site" content="{{ site.twitter_handle }}">
+
+    <meta property="og:image:width" content="{{ site.image_dimensions.cover_image.width }}">
+    <meta property="og:image:height" content="{{ site.image_dimensions.cover_image.height }}">
+{% endblock %}

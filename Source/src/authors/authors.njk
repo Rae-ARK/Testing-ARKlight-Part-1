@@ -1,0 +1,9 @@
+---
+pagination:
+  data: datasource.authors
+  size: 1
+  alias: author
+  addAllPagesToCollections: true
+layout: 'layouts/author.njk'
+permalink: '{{ author.path }}/{% if author.page %}{{ author.page }}/{% endif %}'
+---

@@ -1,0 +1,59 @@
+{% from "partials/role-list-item.njk" import roleListItem %}
+
+{% macro card(post, index) %}
+    {% set fCCAuthorRegEx = r/^freeCodeCamp(\.org)?$/ %}
+    {% set lazyLoad = true if (index >= 4) else false %}
+    {% set primaryTag = post.tags[0] %}
+
+    <article class="post-card" data-test-label="post-card">
+        <a class="post-card-image-link" href="{{ post.path }}" aria-label="{{ post.title }}">
+            {%
+                image
+                post.feature_image,
+                "post-card-image",
+                (post.title | escape),
+                "(max-width: 360px) 300px,
+                    (max-width: 655px) 600px,
+                    (max-width: 767px) 1000px,
+                    (min-width: 768px) 300px,
+                    92vw",
+                [300, 600, 1000, 2000],
+                post.image_dimensions.feature_image,
+                "feature-image",
+                lazyLoad
+            %}
+        </a>
+        <div class="post-card-content">
+            <div class="post-card-content-link">
+                <header class="post-card-header">
+                    {% if primaryTag %}
+                        <span class="post-card-tags">
+                            <a dir="ltr"  href="{{ primaryTag.path }}">
+                                #{{ primaryTag.name }}
+                            </a>
+                        </span>
+                    {% endif %}
+                    <h2 class="post-card-title">
+                        <a href="{{ post.path }}">
+                            {{ post.title }}
+                        </a>
+                    </h2>
+                </header>
+            </div>
+            <footer class="post-card-meta">
+                {% if fCCAuthorRegEx.test(post.primary_author.name) %}
+                    <time class="meta-item-single" datetime="{{ post.published_at }}">{% timeAgo post.published_at %}</time>
+                {% else %}
+                    <ul class="author-list" data-test-label="author-list">
+                        {% if post.original_post %}
+                            {{ roleListItem(post.primary_author, post.published_at, 'translator') }}
+                            {{ roleListItem(post.original_post.primary_author, post.original_post.published_at, 'author', post.original_post.locale_i18n) }}
+                        {% else %}
+                            {{ roleListItem(post.primary_author, post.published_at) }}
+                        {% endif %}
+                    </ul>
+                {% endif %}
+            </footer>
+        </div>
+    </article>
+{% endmacro %}

@@ -1,0 +1,15 @@
+FROM node:24-alpine
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME/bin:$PATH"
+RUN corepack enable pnpm && pnpm add -g serve
+
+ARG BUILD_LANGUAGE
+
+WORKDIR /var/www/html/
+COPY dist .
+
+WORKDIR /app
+COPY docker/languages/$BUILD_LANGUAGE/serve.json .
+
+EXPOSE 3000
+CMD ["serve", "--config", "/app/serve.json", "--cors", "--no-clipboard", "--no-port-switching", "-p", "3000", "/var/www/html"]

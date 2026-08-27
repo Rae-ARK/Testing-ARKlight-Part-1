@@ -1,0 +1,17 @@
+{
+  "forum": "https://forum.freecodecamp.org/c/ukrainian/569",
+  "learn": "https://www.freecodecamp.org/ukrainian/learn",
+  "donate": "https://www.freecodecamp.org/ukrainian/donate",
+  "banner": {
+    "default": "https://www.freecodecamp.org/ukrainian",
+    "authenticated": "https://www.freecodecamp.org/ukrainian/donate",
+    "authenticated-donor": "https://www.freecodecamp.org/news/how-to-donate-to-free-code-camp/"
+  },
+  "twitter": "https://twitter.com/freeCodeCampUK",
+  "footer": {
+    "about": "https://www.freecodecamp.org/news/about/",
+    "support": "https://www.freecodecamp.org/news/support/",
+    "honesty": "https://www.freecodecamp.org/news/academic-honesty-policy/",
+    "coc": "https://www.freecodecamp.org/news/code-of-conduct/"
+  }
+}
