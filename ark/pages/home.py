@@ -1,31 +1,26 @@
-"""Home / listing page -- stage 0 scaffold placeholder.
+"""Home / listing page.
 
-This is a plain content-building function, not a route itself: ARKlight's
-static discovery only recognizes a real `@site.page(...)` decorator, and
-only in the *entry* file's own source (`arklight/parser/discover.py`).
-So the decorator lives in `ark/site.py`, which imports `home_page` from
-here and wraps it -- this module just builds the ARKNode tree.
-
-This confirms the ARKlight build pipeline is wired up end-to-end
-(`ark/site.py` -> `arklight build` -> static HTML) using the shared
-`page_shell()`. The real article listing (docs/migration.md,
-sequencing step 2) replaces this body with fixture-backed article
-cards.
+Stage 2 (docs/migration.md, sequencing step 2): renders the fixture
+article list from `ark/content/articles.py` via the shared
+`article_list()` card component. Stage 1's placeholder body is gone --
+this is the real (if fixture-backed) listing now.
 """
 
 from arklight import Heading, Text
 
+from components.article_card import article_list
 from components.layout import SITE_NAME, page_shell
+from content.articles import ARTICLES
 
 
 def home_page():
     return page_shell(
         Heading(SITE_NAME, level=1),
         Text(
-            "This site is being rebuilt on ARKlight, one page at a time. "
-            "See docs/migration.md in this repo for the plan.",
+            "Developer news and tutorials, rebuilt on ARKlight.",
             class_name="muted",
         ),
+        article_list(ARTICLES),
         title=SITE_NAME,
         description="freeCodeCamp's developer news, rebuilt on ARKlight.",
     )

@@ -75,9 +75,11 @@ as a single PR/commit against this repo:
    `arklight build ark/site.py -o ARK`.
 2. **Home/listing page** -- static (hard-coded/fixture) article list
    rendered via ARKlight components, matching `Source/`'s listing
-   markup structurally. **In progress**: `ark/pages/home.py` currently
-   holds a placeholder body (confirms the pipeline end-to-end); the
-   real fixture-backed article list is still to come.
+   markup structurally. **Landed**: `ark/content/articles.py` (fixture
+   data) + `ark/components/article_card.py` (`article_card()`,
+   `article_list()`), rendered from `ark/pages/home.py`. Card links
+   point at `/articles/<slug>` and `/tags/<tag>` routes that don't
+   exist yet -- patches 3 and 5.
 3. **Article page** -- single-post template, including head metadata
    (`title`, `description`, `og_*`, `favicon` -- all supported by
    `Page(...)` already) ported from the fixture data.
